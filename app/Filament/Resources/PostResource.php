@@ -42,14 +42,31 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->searchable(),
-                TextColumn::make('slug'),
-                TextColumn::make('content'),
+                TextColumn::make('title')->sortable()
+                ->toggleable()
+                ->searchable(),
+
+                TextColumn::make('slug')->sortable()
+                ->toggleable()
+                ->searchable(),
+
+                TextColumn::make('content')->sortable()
+                ->toggleable()
+                // ->wrap()
+                ->limit(30)
+                // ->tooltip("The content of the post")
+                ->tooltip(fn($record): string=>$record->content)
+                ->searchable(),
+
                 TextColumn::make('created_at')
+                    ->toggleable()
                     ->dateTime(),
+
                 TextColumn::make('updated_at')
+                    ->toggleable()
                     ->dateTime(),
             ])
+            ->defaultSort('title','desc')
             ->filters([
                 //
             ])
